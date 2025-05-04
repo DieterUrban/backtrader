@@ -1,0 +1,10 @@
+#yahoo-fin==0.8.9.1
+#yfinance==0.2.31
+#ta==0.10.2
+#html5lib
+#openpyxl
+#pyyaml
+#dotmap
+#fastparquet
+#plotly==5.17
+pandas
