@@ -5,6 +5,7 @@
 #openpyxl
 #pyyaml
 #dotmap
-#fastparquet
-#plotly==5.17
+
 pandas
+matplotlib
+backtrader
