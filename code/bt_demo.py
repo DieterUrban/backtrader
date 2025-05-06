@@ -109,7 +109,6 @@ class TestStrategy(bt.Strategy):
                         self.order = self.buy()
 
         else:
-
             # Already in the market ... we might sell
             if len(self) >= (self.bar_executed + 5):
                 # SELL, SELL, SELL!!! (with all possible default parameters)
@@ -117,6 +116,29 @@ class TestStrategy(bt.Strategy):
 
                 # Keep track of the created order to avoid a 2nd order
                 self.order = self.sell()
+
+
+class BuyAndHold(bt.Strategy):
+
+    def log(self, txt, dt=None):
+        ''' Logging function for this strategy'''
+        dt = dt or self.datas[0].datetime.date(0)
+        print('%s, %s' % (dt.isoformat(), txt))
+
+    def __init__(self):
+        # Keep a reference to the "close" line in the data[0] dataseries
+        self.dataclose = self.datas[0].close
+
+        # To keep track of pending orders and buy price/commission
+        self.order = None
+        self.buyprice = None
+        self.buycomm = None
+        
+    def next(self):
+        # Do nothing, Simply log the closing price of the series from the reference
+        self.log('Close, %.2f' % self.dataclose[0])
+        
+    
 
 
 #%%

@@ -6,13 +6,9 @@ https://www.backtrader.com/docu/signal_strategy/signal_strategy/#first-run-long-
 """
 
 import os
-
 from datetime import timedelta
-
 import pandas as pd
-
 import backtrader as bt
-
 
 #%% 
 
@@ -43,8 +39,8 @@ class EMACrossoverStrategy(bt.Strategy):
         self.ema1 = bt.indicators.EMA(self.data.close, period=self.params.ema1_period)
         self.ema2 = bt.indicators.EMA(self.data.close, period=self.params.ema2_period)
         
-        self.buysig = self.ema1 > self.ema2()
-        self.sellsig = self.ema1 < self.ema2()
+        self.buysig = self.ema1 > self.ema2
+        self.sellsig = self.ema1 < self.ema2
         
         self.entry_exit_params = self.params.entry_exit_params
         self.buy_price = None
@@ -62,7 +58,6 @@ class EMACrossoverStrategy(bt.Strategy):
             self.last_trade_date = self.data.datetime.date(0)
             self.log('SHORT', 'SELL', self.strategy_name)
 
-
     def handle_exit_logic(self):
         if self.position:
             if self.position.size > 0:  # Long position
@@ -74,15 +69,16 @@ class EMACrossoverStrategy(bt.Strategy):
                     self.close()
                     self.log('SHORT', 'CLOSE', 'Exit Condition Met')
 
-
     def next(self):
        # Simply log the closing price of the series from the reference
-       self.log('Close, %.2f' % self.dataclose[0])
+       # self.log('Close, %.2f' % self.dataclose[0])
+       print('.',end='')
 
        # Check if an order is pending ... if yes, we cannot send a 2nd one
        if self.order:
+           self.log('pending order')
            return
-       
+    
        # Check if we are in the market
        if not self.position:
            # Not yet ... we MIGHT BUY if ...
