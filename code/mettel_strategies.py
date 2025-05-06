@@ -72,7 +72,7 @@ class EMACrossoverStrategy(bt.Strategy):
     def next(self):
        # Simply log the closing price of the series from the reference
        # self.log('Close, %.2f' % self.dataclose[0])
-       print('.',end='')
+       # print('.',end='')
 
        # Check if an order is pending ... if yes, we cannot send a 2nd one
        if self.order:
