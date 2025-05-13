@@ -39,6 +39,7 @@ class EMACrossoverStrategy(bt.Strategy):
         self.ema1 = bt.indicators.EMA(self.data.close, period=self.params.ema1_period)
         self.ema2 = bt.indicators.EMA(self.data.close, period=self.params.ema2_period)
         
+        # create buy and sell signals as 'lines'
         self.buysig = self.ema1 > self.ema2
         self.sellsig = self.ema1 < self.ema2
         
@@ -46,6 +47,7 @@ class EMACrossoverStrategy(bt.Strategy):
         self.buy_price = None
         self.last_trade_date = None  # Cooldown-Variable hinzufügen
 
+    # unclear if needed
     def handle_entry_signal(self, signal_type):
         if signal_type == "LONG":
             self.buy()
@@ -58,6 +60,7 @@ class EMACrossoverStrategy(bt.Strategy):
             self.last_trade_date = self.data.datetime.date(0)
             self.log('SHORT', 'SELL', self.strategy_name)
 
+    # unclear if needed
     def handle_exit_logic(self):
         if self.position:
             if self.position.size > 0:  # Long position
@@ -83,61 +86,20 @@ class EMACrossoverStrategy(bt.Strategy):
        if not self.position:
            # Not yet ... we MIGHT BUY if ...
            if self.buysig:
-                       # BUY, BUY, BUY!!! (with default parameters)
                        self.log('BUY CREATE, %.2f' % self.dataclose[0])
-
                        # Keep track of the created order to avoid a 2nd order
                        self.order = self.buy()
        else:
            # Already in the market ... we might sell
            if self.sellsig:
-               # SELL, SELL, SELL!!! (with all possible default parameters)
                self.log('SELL CREATE, %.2f' % self.dataclose[0])
-
                # Keep track of the created order to avoid a 2nd order
                self.order = self.sell()
 
-
-    def __mettel_next(self):
-        pass
-        """
-        if self.data.datetime.date(0) < start_date.date():
-            return
-
-        if self.last_trade_date is not None and self.data.datetime.date(0) == self.last_trade_date:
-            return
-
-        if not self.position and self.ema1 > self.ema2:
-            self.handle_entry_signal(signal_type="LONG")
-            print(f"Long-Signal generiert: {self.data.datetime.date(0)} zu {self.data.close[0]}")
-
-        if not self.position and self.ema1 < self.ema2:
-            self.handle_entry_signal(signal_type="SHORT")
-            print(f"Short-Signal generiert: {self.data.datetime.date(0)} zu {self.data.close[0]}")
-
-        elif self.position:
-            self.handle_exit_logic()
-        """
-
+    # unclear if needed
     def reset_trade(self):
         self.buy_price = None
 
-    if False:
-        pass
-        """
-        def log(self, direction, action, reason, pnl=0):
-            trade_log.append({
-                'Strategy': self.strategy_name,
-                'Direction': direction,
-                'Action': action,
-                'Reason': reason,
-                'EMA1_Period': self.params.ema1_period,
-                'EMA2_Period': self.params.ema2_period,
-                'Date': self.data.datetime.date(0),
-                'Price': self.data.close[0],
-                'PnL': pnl
-            })
-        """
     def log(self, txt, dt=None):
         ''' Logging function fot this strategy'''
         dt = dt or self.datas[0].datetime.date(0)
@@ -176,7 +138,6 @@ class EMACrossoverStrategy(bt.Strategy):
     def notify_trade(self, trade):
         if not trade.isclosed:
             return
-
         self.log('OPERATION PROFIT, GROSS %.2f, NET %.2f' %
                  (trade.pnl, trade.pnlcomm))
 

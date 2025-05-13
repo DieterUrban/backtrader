@@ -14,15 +14,20 @@ import backtrader as bt
 
 #%%
 
-if os.getlogin() == 'urban':
-    base_path = os.getcwd().split('code')[0]
-    data_path = os.path.join(base_path,'data')
-    out_path = os.path.join(base_path,'results')
-else: 
-    base_path = r"C:\Users\Bernd\Desktop\Python"
-    data_path = os.path.join(base_path,"CSV-Dateien")
-    out_path = os.path.join(base_path,"Ergebnisse")
 
+def get_path():
+    if os.getlogin() == 'urban':
+        base_path = os.getcwd().split('code')[0]
+        data_path = os.path.join(base_path,'data')
+        out_path = os.path.join(base_path,'results')
+    else: 
+        base_path = r"C:\Users\Bernd\Desktop\Python"
+        data_path = os.path.join(base_path,"CSV-Dateien")
+        out_path = os.path.join(base_path,"Ergebnisse")
+        
+    return base_path, data_path, out_path
+
+base_path, data_path, out_path = get_path()
     
 def read_data(name="wkn_COM062_historic.csv", fromdate='1900-01-01', todate=pd.Timestamp.today() ):
     
